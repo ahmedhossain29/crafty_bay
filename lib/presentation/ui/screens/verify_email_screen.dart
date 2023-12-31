@@ -31,8 +31,8 @@ class VerifyEmailScreen extends StatelessWidget {
                 height: 4,
               ),
               Text(
-                'Please enter your email address',
-                style: Theme.of(context).textTheme.bodySmall,
+                'Please Enter Your Email Address',
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
               const SizedBox(
                 height: 16,

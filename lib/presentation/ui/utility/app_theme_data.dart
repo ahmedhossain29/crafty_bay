@@ -33,6 +33,11 @@ class AppThemeData {
         fontWeight: FontWeight.w400,
         color: Colors.grey.shade600,
       ),
+      bodyMedium: TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w400,
+        color: Colors.grey.shade600,
+      ),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
