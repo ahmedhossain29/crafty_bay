@@ -1,5 +1,7 @@
+import 'package:crafty_bay/presentation/ui/screens/create_review_screen.dart';
 import 'package:crafty_bay/presentation/ui/widgets/app_logo.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CompleteProfileScreen extends StatelessWidget {
   const CompleteProfileScreen({super.key});
@@ -63,7 +65,9 @@ class CompleteProfileScreen extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(CreateReviewScreen());
+                },
                 child: const Text('Complete'),
               ),
             ),
