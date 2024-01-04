@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:crafty_bay/presentation/ui/screens/auth/complete_profile_creen.dart';
 import 'package:crafty_bay/presentation/ui/utility/app_colors.dart';
 import 'package:crafty_bay/presentation/ui/widgets/app_logo.dart';
@@ -5,8 +7,22 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
-class OtpScreen extends StatelessWidget {
+class OtpScreen extends StatefulWidget {
   const OtpScreen({super.key});
+
+  @override
+  State<OtpScreen> createState() => _OtpScreenState();
+}
+
+class _OtpScreenState extends State<OtpScreen> {
+  int countdownSeconds = 60;
+  bool isButtonEnabled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _startCountdown();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,16 +94,16 @@ class OtpScreen extends StatelessWidget {
               height: 28,
             ),
             RichText(
-              text: const TextSpan(children: [
-                TextSpan(
-                  text: 'This code will expire in',
+              text: TextSpan(children: [
+                const TextSpan(
+                  text: 'This code will expire',
                   style: TextStyle(
                     color: Colors.grey,
                   ),
                 ),
                 TextSpan(
-                  text: ' 120s',
-                  style: TextStyle(
+                  text: countdownSeconds > 0 ? " in $countdownSeconds s" : "",
+                  style: const TextStyle(
                       color: AppColors.primaryColor,
                       fontWeight: FontWeight.w600),
                 ),
@@ -97,15 +113,44 @@ class OtpScreen extends StatelessWidget {
               height: 12,
             ),
             TextButton(
-              onPressed: () {},
-              child: Text(
-                'Resend Code',
-                style: TextStyle(color: Colors.grey),
-              ),
+              onPressed: isButtonEnabled ? () => _handleResend() : null,
+              child: countdownSeconds == 0
+                  ? const Text(
+                      'Resend Code',
+                      style: TextStyle(color: AppColors.primaryColor),
+                    )
+                  : const Text(
+                      'Resend Code',
+                      style: TextStyle(color: Colors.grey),
+                    ),
             ),
           ]),
         ),
       ),
     );
+  }
+
+  void _startCountdown() {
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        if (countdownSeconds > 0) {
+          countdownSeconds--;
+        } else {
+          isButtonEnabled = true;
+          timer.cancel(); // Stop the countdown when it reaches 0
+        }
+      });
+    });
+  }
+
+  void _handleResend() {
+    // Reset the countdown and disable the button
+    setState(() {
+      countdownSeconds = 60;
+      isButtonEnabled = false;
+    });
+
+    // Start the countdown again
+    _startCountdown();
   }
 }
