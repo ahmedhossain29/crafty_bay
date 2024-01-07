@@ -117,7 +117,7 @@ class _OtpScreenState extends State<OtpScreen> {
               child: countdownSeconds == 0
                   ? const Text(
                       'Resend Code',
-                      style: TextStyle(color: AppColors.primaryColor),
+                      //style: TextStyle(color: AppColors.primaryColor),
                     )
                   : const Text(
                       'Resend Code',
@@ -131,7 +131,7 @@ class _OtpScreenState extends State<OtpScreen> {
   }
 
   void _startCountdown() {
-    Timer.periodic(Duration(seconds: 1), (timer) {
+    Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         if (countdownSeconds > 0) {
           countdownSeconds--;
