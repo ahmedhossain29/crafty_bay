@@ -35,6 +35,9 @@ class _HomeScreenState extends State<HomeScreen> {
               title: 'All Categories',
               onTapSeeAll: () {},
             ),
+            const SizedBox(
+              height: 10,
+            ),
           ],
         ),
       ),
