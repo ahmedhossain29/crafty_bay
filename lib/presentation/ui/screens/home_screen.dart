@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: appBar,
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -76,14 +76,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   SizedBox get ProductList {
     return SizedBox(
-      height: 190,
+      height: 200,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         primary: false,
         shrinkWrap: true,
         itemCount: 10,
         itemBuilder: (context, index) {
-          return ProductCardItem();
+          return const ProductCardItem();
         },
         separatorBuilder: (_, __) {
           return const SizedBox(

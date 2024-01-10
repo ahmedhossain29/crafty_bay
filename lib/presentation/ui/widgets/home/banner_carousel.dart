@@ -30,7 +30,7 @@ class _BannerCarouselState extends State<BannerCarousel> {
               builder: (BuildContext context) {
                 return Container(
                     width: MediaQuery.of(context).size.width,
-                    margin: EdgeInsets.symmetric(horizontal: 2.0),
+                    margin: const EdgeInsets.symmetric(horizontal: 2.0),
                     decoration: BoxDecoration(
                       color: AppColors.primaryColor,
                       borderRadius: BorderRadius.circular(8),
@@ -38,7 +38,7 @@ class _BannerCarouselState extends State<BannerCarousel> {
                     child: Center(
                       child: Text(
                         'text $i',
-                        style: TextStyle(fontSize: 16.0),
+                        style: const TextStyle(fontSize: 16.0),
                       ),
                     ));
               },
@@ -58,7 +58,7 @@ class _BannerCarouselState extends State<BannerCarousel> {
                     Container(
                       height: 14,
                       width: 14,
-                      margin: EdgeInsets.all(4),
+                      margin: const EdgeInsets.all(4),
                       decoration: BoxDecoration(
                         color: i == _CurrentIndex.value
                             ? AppColors.primaryColor

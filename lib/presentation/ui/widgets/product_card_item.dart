@@ -9,7 +9,7 @@ class ProductCardItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 190,
+      height: 200,
       width: 150,
       child: Card(
         shape: RoundedRectangleBorder(
@@ -39,7 +39,7 @@ class ProductCardItem extends StatelessWidget {
                     'Micropack MHP-800 3.5mm Headphone ',
                     maxLines: 1,
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: 16,
                       fontWeight: FontWeight.w500,
                       color: Colors.black54,
                       overflow: TextOverflow.ellipsis,
@@ -50,7 +50,7 @@ class ProductCardItem extends StatelessWidget {
                       const Text(
                         '\$120',
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: 14,
                           color: AppColors.primaryColor,
                           fontWeight: FontWeight.w600,
                         ),
@@ -84,10 +84,10 @@ class ProductCardItem extends StatelessWidget {
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: const Padding(
-                          padding: EdgeInsets.all(2.0),
+                          padding: EdgeInsets.all(4.0),
                           child: Icon(
                             Icons.favorite_outline,
-                            size: 10,
+                            size: 12,
                           ),
                         ),
                       ),
