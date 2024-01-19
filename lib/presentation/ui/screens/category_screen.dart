@@ -16,14 +16,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
     return PopScope(
       canPop: false,
       onPopInvoked: (value) {
-        Get.find<MainBottomNavController>().backHome();
+        Get.find<MainBottomNavController>().backToHome();
       },
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
           leading: IconButton(
             onPressed: () {
-              Get.find<MainBottomNavController>().backHome();
+              Get.find<MainBottomNavController>().backToHome();
             },
             icon: const Icon(Icons.arrow_back_ios),
           ),
