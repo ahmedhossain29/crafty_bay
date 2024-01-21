@@ -83,6 +83,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                                 title: 'Send OTP Failed',
                                 message: controller.errorMessage,
                                 duration: const Duration(seconds: 2),
+                                isDismissible: true,
                               ));
                             }
                           }
