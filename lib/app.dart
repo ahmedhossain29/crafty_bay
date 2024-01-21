@@ -5,9 +5,14 @@ import 'package:get/get.dart';
 
 import 'controller_binder.dart';
 
-class CraftyBay extends StatelessWidget {
+class CraftyBay extends StatefulWidget {
   const CraftyBay({super.key});
 
+  @override
+  State<CraftyBay> createState() => _CraftyBayState();
+}
+
+class _CraftyBayState extends State<CraftyBay> {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(

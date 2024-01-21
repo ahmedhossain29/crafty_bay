@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:crafty_bay/presentation/state_holders/verify_otp_controller.dart';
-import 'package:crafty_bay/presentation/ui/screens/auth/complete_profile_creen.dart';
+import 'package:crafty_bay/presentation/ui/screens/auth/complete_profile_screen.dart';
 import 'package:crafty_bay/presentation/ui/screens/main_bottom_nav_screen.dart';
 import 'package:crafty_bay/presentation/ui/utility/app_colors.dart';
 import 'package:crafty_bay/presentation/ui/widgets/app_logo.dart';
@@ -114,6 +114,8 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                             Get.showSnackbar(GetSnackBar(
                               title: 'OTP Verification Failed',
                               message: verifyOtpController.errorMessage,
+                              duration: const Duration(seconds: 2),
+                              isDismissible: true,
                             ));
                           }
                         }

@@ -5,5 +5,6 @@ import 'package:flutter/material.dart';
 /// Feature first (Login->(data, ui,) , Card, others)
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const CraftyBay());
 }
