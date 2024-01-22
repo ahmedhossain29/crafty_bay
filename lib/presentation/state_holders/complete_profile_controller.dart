@@ -18,6 +18,9 @@ class CompleteProfileController extends GetxController {
   Profile get profile => _profile;
 
   Future<bool> createProfileData(
+
+      ///Create Data Class
+
       String token,
       String firstName,
       String lastName,
