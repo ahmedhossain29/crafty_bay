@@ -153,7 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
           iconData: Icons.person,
           onTap: () async {
             await Get.find<AuthController>().clearAuthData();
-            Get.offAll(() => VerifyEmailScreen());
+            Get.offAll(() => const VerifyEmailScreen());
           },
         ),
         const SizedBox(
