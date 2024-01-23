@@ -1,9 +1,12 @@
 import 'package:crafty_bay/presentation/state_holders/auth_controller.dart';
+import 'package:crafty_bay/presentation/state_holders/category_controller.dart';
+import 'package:crafty_bay/presentation/state_holders/home_banner_controller.dart';
 import 'package:crafty_bay/presentation/state_holders/main_bottom_nav_controller.dart';
 import 'package:crafty_bay/presentation/ui/screens/auth/verify_email_screen.dart';
 import 'package:crafty_bay/presentation/ui/screens/product_list_screen.dart';
 import 'package:crafty_bay/presentation/ui/utility/assets_path.dart';
 import 'package:crafty_bay/presentation/ui/widgets/category_item.dart';
+import 'package:crafty_bay/presentation/ui/widgets/center_circular_progress_indicator.dart';
 import 'package:crafty_bay/presentation/ui/widgets/home/banner_carousel.dart';
 import 'package:crafty_bay/presentation/ui/widgets/home/circle_icon_button.dart';
 import 'package:crafty_bay/presentation/ui/widgets/home/section_title.dart';
@@ -35,7 +38,15 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(
                 height: 16,
               ),
-              const BannerCarousel(),
+              SizedBox(
+                  height: 210,
+                  child: GetBuilder<HomeBannerController>(
+                      builder: (homeBannerController) {
+                    return BannerCarousel(
+                      bannerList:
+                          homeBannerController.bannerListModel.bannerList ?? [],
+                    );
+                  })),
               const SizedBox(
                 height: 16,
               ),
@@ -102,20 +113,30 @@ class _HomeScreenState extends State<HomeScreen> {
   SizedBox get categoryList {
     return SizedBox(
       height: 130,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        primary: false,
-        shrinkWrap: true,
-        itemCount: 10,
-        itemBuilder: (context, index) {
-          return const CategoryItem();
-        },
-        separatorBuilder: (_, __) {
-          return const SizedBox(
-            width: 8,
-          );
-        },
-      ),
+      child: GetBuilder<CategoryController>(builder: (categoryController) {
+        return Visibility(
+          visible: categoryController.inProgress == false,
+          replacement: const CenterCircularProgressIndicator(),
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            primary: false,
+            shrinkWrap: true,
+            itemCount:
+                categoryController.categoryListModel.categoryList?.length ?? 0,
+            itemBuilder: (context, index) {
+              return CategoryItem(
+                category:
+                    categoryController.categoryListModel.categoryList![index],
+              );
+            },
+            separatorBuilder: (_, __) {
+              return const SizedBox(
+                width: 8,
+              );
+            },
+          ),
+        );
+      }),
     );
   }
 

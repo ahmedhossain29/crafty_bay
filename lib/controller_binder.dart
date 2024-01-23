@@ -1,4 +1,6 @@
 import 'package:crafty_bay/presentation/state_holders/auth_controller.dart';
+import 'package:crafty_bay/presentation/state_holders/category_controller.dart';
+import 'package:crafty_bay/presentation/state_holders/home_banner_controller.dart';
 import 'package:crafty_bay/presentation/state_holders/main_bottom_nav_controller.dart';
 import 'package:crafty_bay/presentation/state_holders/read_profile_data_controller.dart';
 import 'package:crafty_bay/presentation/state_holders/send_email_otp_controller.dart';
@@ -16,5 +18,7 @@ class ControllerBinder extends Bindings {
     Get.put(ReadProfileDataController());
     Get.put(CompleteProfileController());
     Get.put(AuthController());
+    Get.put(HomeBannerController());
+    Get.put(CategoryController());
   }
 }

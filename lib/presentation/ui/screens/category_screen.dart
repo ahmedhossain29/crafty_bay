@@ -1,5 +1,7 @@
+import 'package:crafty_bay/presentation/state_holders/category_controller.dart';
 import 'package:crafty_bay/presentation/state_holders/main_bottom_nav_controller.dart';
 import 'package:crafty_bay/presentation/ui/widgets/category_item.dart';
+import 'package:crafty_bay/presentation/ui/widgets/center_circular_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -32,17 +34,30 @@ class _CategoryScreenState extends State<CategoryScreen> {
             style: TextStyle(fontSize: 18),
           ),
         ),
-        body: GridView.builder(
-            itemCount: 40,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 4,
-              mainAxisSpacing: 10,
+        body: GetBuilder<CategoryController>(builder: (categoryController) {
+          return Visibility(
+            visible: categoryController.inProgress == false,
+            replacement: const CenterCircularProgressIndicator(),
+            child: Padding(
+              padding: const EdgeInsets.all(8),
+              child: GridView.builder(
+                  itemCount: categoryController
+                          .categoryListModel.categoryList?.length ??
+                      0,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4,
+                    mainAxisSpacing: 10,
+                  ),
+                  itemBuilder: (context, index) {
+                    return FittedBox(
+                      child: CategoryItem(
+                          category: categoryController
+                              .categoryListModel.categoryList![index]),
+                    );
+                  }),
             ),
-            itemBuilder: (context, index) {
-              return const FittedBox(
-                child: CategoryItem(),
-              );
-            }),
+          );
+        }),
       ),
     );
   }

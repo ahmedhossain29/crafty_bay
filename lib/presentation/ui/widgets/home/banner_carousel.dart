@@ -1,11 +1,14 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:crafty_bay/data/models/banner.dart';
 import 'package:crafty_bay/presentation/ui/utility/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class BannerCarousel extends StatefulWidget {
-  const BannerCarousel({super.key, this.height});
+  const BannerCarousel({super.key, this.height, required this.bannerList});
 
   final double? height;
+  final List<BannerItem> bannerList;
+
   @override
   State<BannerCarousel> createState() => _BannerCarouselState();
 }
@@ -26,22 +29,57 @@ class _BannerCarouselState extends State<BannerCarousel> {
               onPageChanged: (index, reason) {
                 _CurrentIndex.value = index;
               }),
-          items: [1, 2, 3, 4, 5].map((i) {
+          items: widget.bannerList.map((banner) {
             return Builder(
               builder: (BuildContext context) {
                 return Container(
-                    width: MediaQuery.of(context).size.width,
-                    margin: const EdgeInsets.symmetric(horizontal: 2.0),
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryColor,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Center(
-                      child: Text(
-                        'text $i',
-                        style: const TextStyle(fontSize: 16.0),
+                  color: AppColors.primaryColor,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          //margin: const EdgeInsets.symmetric(horizontal: 2.0),
+                          decoration: BoxDecoration(
+                              color: AppColors.primaryColor,
+                              borderRadius: BorderRadius.circular(0),
+                              image: DecorationImage(
+                                  image: NetworkImage(banner.image ?? ''))),
+                        ),
                       ),
-                    ));
+                      const SizedBox(
+                        width: 4,
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                banner.title ?? "",
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              Text(
+                                banner.shortDes ?? "",
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
               },
             );
           }).toList(),
@@ -51,11 +89,11 @@ class _BannerCarouselState extends State<BannerCarousel> {
         ),
         ValueListenableBuilder(
             valueListenable: _CurrentIndex,
-            builder: (context, index, widget) {
+            builder: (context, index, _) {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  for (int i = 0; i < 5; i++)
+                  for (int i = 0; i < widget.bannerList.length; i++)
                     Container(
                       height: 14,
                       width: 14,
