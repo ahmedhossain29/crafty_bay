@@ -2,6 +2,7 @@ import 'package:crafty_bay/presentation/state_holders/auth_controller.dart';
 import 'package:crafty_bay/presentation/state_holders/category_controller.dart';
 import 'package:crafty_bay/presentation/state_holders/home_banner_controller.dart';
 import 'package:crafty_bay/presentation/state_holders/main_bottom_nav_controller.dart';
+import 'package:crafty_bay/presentation/state_holders/popular_product_controller.dart';
 import 'package:crafty_bay/presentation/ui/screens/auth/verify_email_screen.dart';
 import 'package:crafty_bay/presentation/ui/screens/product_list_screen.dart';
 import 'package:crafty_bay/presentation/ui/utility/assets_path.dart';
@@ -56,9 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Get.find<MainBottomNavController>().ChangeIndex(1);
                 },
               ),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
               categoryList,
               SectionTitle(
                 title: 'Popular',
@@ -66,18 +65,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   Get.to(const ProductListScreen());
                 },
               ),
-              ProductList,
-              const SizedBox(
-                height: 8,
-              ),
+              popularProductList,
+              const SizedBox(height: 8),
               SectionTitle(
                 title: 'Special',
                 onTapSeeAll: () {},
               ),
               ProductList,
-              const SizedBox(
-                height: 8,
-              ),
+              const SizedBox(height: 8),
               SectionTitle(
                 title: 'New',
                 onTapSeeAll: () {},
@@ -90,6 +85,38 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  SizedBox get popularProductList {
+    return SizedBox(
+      height: 200,
+      child: GetBuilder<PopularProductController>(
+          builder: (popularProductController) {
+        return Visibility(
+          visible: popularProductController.inProgress == false,
+          replacement: const CenterCircularProgressIndicator(),
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            primary: false,
+            shrinkWrap: true,
+            itemCount:
+                popularProductController.productListModel.productList?.length ??
+                    0,
+            itemBuilder: (context, index) {
+              return ProductCardItem(
+                product: popularProductController
+                    .productListModel.productList![index],
+              );
+            },
+            separatorBuilder: (_, __) {
+              return const SizedBox(
+                width: 8,
+              );
+            },
+          ),
+        );
+      }),
+    );
+  }
+
   SizedBox get ProductList {
     return SizedBox(
       height: 200,
@@ -99,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
         shrinkWrap: true,
         itemCount: 10,
         itemBuilder: (context, index) {
-          return const ProductCardItem();
+          //return const ProductCardItem();
         },
         separatorBuilder: (_, __) {
           return const SizedBox(

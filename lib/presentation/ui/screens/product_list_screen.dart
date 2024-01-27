@@ -1,4 +1,3 @@
-import 'package:crafty_bay/presentation/ui/widgets/product_card_item.dart';
 import 'package:flutter/material.dart';
 
 class ProductListScreen extends StatefulWidget {
@@ -23,8 +22,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
               crossAxisCount: 2, mainAxisSpacing: 6, childAspectRatio: 0.80),
           itemBuilder: (context, index) {
             return const FittedBox(
-              child: ProductCardItem(),
-            );
+                // child: ProductCardItem(),
+                );
           }),
     );
   }

@@ -1,18 +1,18 @@
-class Category {
+class CategoryListItem {
   int? id;
   String? categoryName;
   String? categoryImg;
   String? createdAt;
   String? updatedAt;
 
-  Category(
+  CategoryListItem(
       {this.id,
       this.categoryName,
       this.categoryImg,
       this.createdAt,
       this.updatedAt});
 
-  Category.fromJson(Map<String, dynamic> json) {
+  CategoryListItem.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     categoryName = json['categoryName'];
     categoryImg = json['categoryImg'];

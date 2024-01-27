@@ -1,3 +1,4 @@
+import 'package:crafty_bay/data/models/product_model.dart';
 import 'package:crafty_bay/presentation/ui/screens/product_details_screen.dart';
 import 'package:crafty_bay/presentation/ui/utility/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +7,10 @@ import 'package:get/get.dart';
 class ProductCardItem extends StatelessWidget {
   const ProductCardItem({
     super.key,
+    required this.product,
   });
+
+  final ProductModel product;
 
   @override
   Widget build(BuildContext context) {
@@ -30,11 +34,11 @@ class ProductCardItem extends StatelessWidget {
                   topLeft: Radius.circular(16),
                   topRight: Radius.circular(16),
                 ),
-                child: Image.asset(
-                  'assets/images/headphone.jpg',
+                child: Image.network(
+                  product.image ?? " ",
                   width: 150,
                   height: 120,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.scaleDown,
                 ),
               ),
               Padding(
@@ -42,10 +46,10 @@ class ProductCardItem extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Micropack MHP-800 3.5mm Headphone ',
+                    Text(
+                      product.title ?? '',
                       maxLines: 1,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
                         color: Colors.black54,
@@ -54,9 +58,9 @@ class ProductCardItem extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        const Text(
-                          '\$120',
-                          style: TextStyle(
+                        Text(
+                          '\$${product.price ?? 0}',
+                          style: const TextStyle(
                             fontSize: 14,
                             color: AppColors.primaryColor,
                             fontWeight: FontWeight.w600,
@@ -65,17 +69,17 @@ class ProductCardItem extends StatelessWidget {
                         const SizedBox(
                           width: 8,
                         ),
-                        const Wrap(
+                        Wrap(
                           crossAxisAlignment: WrapCrossAlignment.center,
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.star,
                               size: 14,
                               color: Colors.amber,
                             ),
                             Text(
-                              '4.5',
-                              style: TextStyle(
+                              '${product.star}',
+                              style: const TextStyle(
                                 fontSize: 14,
                                 color: Colors.black45,
                                 fontWeight: FontWeight.w600,
