@@ -1,12 +1,17 @@
+import 'package:crafty_bay/presentation/state_holders/product_details_controller.dart';
 import 'package:crafty_bay/presentation/ui/utility/app_colors.dart';
+import 'package:crafty_bay/presentation/ui/widgets/center_circular_progress_indicator.dart';
 import 'package:crafty_bay/presentation/ui/widgets/product_details/color_selector.dart';
 import 'package:crafty_bay/presentation/ui/widgets/product_details/product_image_carousel.dart';
 import 'package:crafty_bay/presentation/ui/widgets/product_details/size_selector.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:item_count_number_button/item_count_number_button.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
-  const ProductDetailsScreen({super.key});
+  const ProductDetailsScreen({super.key, required this.productId});
+
+  final int productId;
 
   @override
   State<ProductDetailsScreen> createState() => _ProductDetailsScreenState();
@@ -31,27 +36,49 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   ];
 
   Color _selectedColor = Colors.black;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Get.find<ProductDetailsController>().getProductDetails(widget.productId);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Product Details'),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  const ProductImageCarousel(),
-                  productDetailsBody,
-                ],
+      body: GetBuilder<ProductDetailsController>(
+          builder: (productDetailsController) {
+        return Visibility(
+          visible: productDetailsController.inProgress == false,
+          replacement: const CenterCircularProgressIndicator(),
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ProductImageCarousel(
+                        urls: [
+                          productDetailsController.productDetails.img1 ?? '',
+                          productDetailsController.productDetails.img2 ?? '',
+                          productDetailsController.productDetails.img3 ?? '',
+                          productDetailsController.productDetails.img4 ?? '',
+                        ],
+                      ),
+                      productDetailsBody,
+                    ],
+                  ),
+                ),
               ),
-            ),
+              priceAndAddToCartSection,
+            ],
           ),
-          priceAndAddToCartSection,
-        ],
-      ),
+        );
+      }),
     );
   }
 

@@ -10,4 +10,11 @@ class Urls {
   static String homeBanner = '$_baseUrl/ListProductSlider';
   static String categoryList = '$_baseUrl/CategoryList';
   static String popularProductList = '$_baseUrl/ListProductByRemark/popular';
+  static String specialProductList = '$_baseUrl/ListProductByRemark/special';
+  static String newProductList = '$_baseUrl/ListProductByRemark/new';
+  static String productsByCategory(int categoryId) =>
+      '$_baseUrl/ListProductByCategory/$categoryId';
+
+  static String productDetails(int productId) =>
+      '$_baseUrl/ListProductByCategory/$productId';
 }
