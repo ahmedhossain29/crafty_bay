@@ -36,44 +36,47 @@ class _BannerCarouselState extends State<BannerCarousel> {
                   color: AppColors.primaryColor,
                   child: Row(
                     children: [
+                      // Expanded(
+                      //   child: Padding(
+                      //     padding: const EdgeInsets.all(10.0),
+                      //     child: Column(
+                      //       crossAxisAlignment: CrossAxisAlignment.start,
+                      //       children: [
+                      //         Text(
+                      //           banner.title ?? "",
+                      //           style: const TextStyle(
+                      //               color: Colors.white,
+                      //               fontSize: 16,
+                      //               fontWeight: FontWeight.w500),
+                      //         ),
+                      //         const SizedBox(
+                      //           height: 8,
+                      //         ),
+                      //         Text(
+                      //           banner.shortDes ?? "",
+                      //           style: const TextStyle(
+                      //             color: Colors.white,
+                      //             fontSize: 14,
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
+                      // const SizedBox(
+                      //   width: 4,
+                      // ),
                       Expanded(
                         child: Container(
                           width: MediaQuery.of(context).size.width,
                           //margin: const EdgeInsets.symmetric(horizontal: 2.0),
                           decoration: BoxDecoration(
-                              color: AppColors.primaryColor,
-                              borderRadius: BorderRadius.circular(0),
-                              image: DecorationImage(
-                                  image: NetworkImage(banner.image ?? ''))),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 4,
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                banner.title ?? "",
-                                style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              Text(
-                                banner.shortDes ?? "",
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ],
+                            color: AppColors.primaryColor,
+                            //  borderRadius: BorderRadius.circular(0),
+                            image: DecorationImage(
+                                alignment: Alignment.center,
+                                fit: BoxFit.cover,
+                                image: NetworkImage(banner.image ?? '')),
                           ),
                         ),
                       ),
