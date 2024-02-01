@@ -1,3 +1,4 @@
+import 'package:crafty_bay/data/models/product_details_data.dart';
 import 'package:crafty_bay/presentation/state_holders/product_details_controller.dart';
 import 'package:crafty_bay/presentation/ui/utility/app_colors.dart';
 import 'package:crafty_bay/presentation/ui/widgets/center_circular_progress_indicator.dart';
@@ -35,7 +36,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     'XXL',
   ];
 
-  Color _selectedColor = Colors.black;
+  String? _selectedColor;
+  String? _selectedSize;
 
   @override
   void initState() {
@@ -69,7 +71,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           productDetailsController.productDetails.img4 ?? '',
                         ],
                       ),
-                      productDetailsBody,
+                      productDetailsBody(
+                          productDetailsController.productDetails),
                     ],
                   ),
                 ),
@@ -82,7 +85,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     );
   }
 
-  Padding get productDetailsBody {
+  Padding productDetailsBody(ProductDetailsData productDetails) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -90,10 +93,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         children: [
           Row(
             children: [
-              const Expanded(
+              Expanded(
                 child: Text(
-                  'Micropak MH 2024 Edition MMH652 -Save 30%',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                  productDetails.product?.title ?? '',
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.w600),
                 ),
               ),
               ValueListenableBuilder(
@@ -147,13 +151,16 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           const SizedBox(
             height: 16,
           ),
-          const Text(
-            'Description',
-            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+          Text(
+            productDetails.product!.shortDes ?? '',
+            style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
           ),
-          const Text(
-            '''Welcome contributions to Item Count Number Button! If you encounter any issues, have suggestions for improvements, or would like to add new features, please feel free to open an issue or submit a pull request. Your contributions can help make this package even better.''',
-            style: TextStyle(color: Colors.grey, fontSize: 12),
+          const SizedBox(
+            height: 8,
+          ),
+          Text(
+            productDetails.des ?? '',
+            style: const TextStyle(color: Colors.black45, fontSize: 14),
           ),
         ],
       ),
