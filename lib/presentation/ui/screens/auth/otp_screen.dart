@@ -66,7 +66,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 keyboardType: TextInputType.number,
                 backgroundColor: Colors.transparent,
-                length: 4,
+                length: 6,
                 animationType: AnimationType.fade,
                 pinTheme: PinTheme(
                   shape: PinCodeFieldShape.box,
