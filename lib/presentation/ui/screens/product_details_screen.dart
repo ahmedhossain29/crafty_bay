@@ -1,5 +1,7 @@
 import 'package:crafty_bay/data/models/product_details_data.dart';
+import 'package:crafty_bay/presentation/state_holders/auth_controller.dart';
 import 'package:crafty_bay/presentation/state_holders/product_details_controller.dart';
+import 'package:crafty_bay/presentation/ui/screens/auth/verify_email_screen.dart';
 import 'package:crafty_bay/presentation/ui/utility/app_colors.dart';
 import 'package:crafty_bay/presentation/ui/widgets/center_circular_progress_indicator.dart';
 import 'package:crafty_bay/presentation/ui/widgets/product_details/color_selector.dart';
@@ -121,7 +123,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           const SizedBox(
             height: 8,
           ),
-          reviewAndRatingRow,
+          reviewAndRatingRow(productDetails.product?.star ?? 0),
           const SizedBox(
             height: 16,
           ),
@@ -133,9 +135,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             height: 8,
           ),
           ColorSelector(
-              colors: colors,
+              colors: productDetails.color
+                      ?.split(',')
+                      .map((e) => getColorFromString(e))
+                      .toList() ??
+                  [],
               onChange: (selectedColor) {
-                _selectedColor = selectedColor;
+                _selectedColor = selectedColor.toString();
               }),
           const SizedBox(
             height: 16,
@@ -147,7 +153,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           const SizedBox(
             height: 8,
           ),
-          SizeSelector(size: sized, onChange: (s) {}),
+          SizeSelector(
+              size: productDetails.size?.split(',') ?? [],
+              onChange: (s) {
+                _selectedSize = s;
+              }),
           const SizedBox(
             height: 16,
           ),
@@ -167,23 +177,23 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     );
   }
 
-  Row get reviewAndRatingRow {
+  Row reviewAndRatingRow(int rating) {
     return Row(
       children: [
-        const Wrap(
+        Wrap(
           crossAxisAlignment: WrapCrossAlignment.center,
           children: [
-            Icon(
+            const Icon(
               Icons.star,
               size: 18,
               color: Colors.amber,
             ),
-            SizedBox(
+            const SizedBox(
               width: 4,
             ),
             Text(
-              '4.5',
-              style: TextStyle(
+              rating.toStringAsPrecision(2),
+              style: const TextStyle(
                 fontSize: 16,
                 color: Colors.black45,
                 fontWeight: FontWeight.w600,
@@ -221,48 +231,67 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       ],
     );
   }
-}
 
-Container get priceAndAddToCartSection {
-  return Container(
-    padding: const EdgeInsets.all(16),
-    decoration: BoxDecoration(
-      color: AppColors.primaryColor.withOpacity(0.15),
-      borderRadius: const BorderRadius.only(
-        topLeft: Radius.circular(16),
-        topRight: Radius.circular(16),
+  Container get priceAndAddToCartSection {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.primaryColor.withOpacity(0.15),
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(16),
+          topRight: Radius.circular(16),
+        ),
       ),
-    ),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        const Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Price',
-              style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black45),
-            ),
-            Text(
-              '\$1254',
-              style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.primaryColor),
-            ),
-          ],
-        ),
-        SizedBox(
-          width: 100,
-          child: ElevatedButton(
-            onPressed: () {},
-            child: const Text('Add To Cart'),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Price',
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black45),
+              ),
+              Text(
+                '\$1254',
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.primaryColor),
+              ),
+            ],
           ),
-        ),
-      ],
-    ),
-  );
+          SizedBox(
+            width: 100,
+            child: ElevatedButton(
+              onPressed: () {
+                if (_selectedColor != null && _selectedSize != null) {
+                  if (Get.find<AuthController>().isTokenNotNull) {
+                  } else {
+                    Get.to(() => const VerifyEmailScreen());
+                  }
+                } else {
+                  Get.showSnackbar(const GetSnackBar(
+                    title: 'Add to cart failed',
+                    message: 'Please select color and size',
+                    duration: Duration(seconds: 2),
+                  ));
+                }
+              },
+              child: const Text('Add To Cart'),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Color getColorFromString(String colorCode) {
+    String code = colorCode.replaceAll('#', '');
+    String hexCode = 'FF$code';
+    return Color(int.parse('0x$hexCode'));
+  }
 }
