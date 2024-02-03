@@ -19,6 +19,7 @@ class _SizeSelectorState extends State<SizeSelector> {
     // TODO: implement initState
     super.initState();
     _selectedSize = widget.size.first;
+    widget.onChange(_selectedSize);
   }
 
   Widget build(BuildContext context) {
