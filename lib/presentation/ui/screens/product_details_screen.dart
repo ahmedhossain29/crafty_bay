@@ -1,4 +1,5 @@
 import 'package:crafty_bay/data/models/product_details_data.dart';
+import 'package:crafty_bay/presentation/state_holders/add_to_cart_controller.dart';
 import 'package:crafty_bay/presentation/state_holders/auth_controller.dart';
 import 'package:crafty_bay/presentation/state_holders/product_details_controller.dart';
 import 'package:crafty_bay/presentation/ui/screens/auth/verify_email_screen.dart';
@@ -23,28 +24,29 @@ class ProductDetailsScreen extends StatefulWidget {
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   ValueNotifier<int> noOfItems = ValueNotifier(1);
   List<Color> colors = [
+    Colors.purple,
     Colors.black,
     Colors.amber,
-    Colors.grey,
-    Colors.green,
-    Colors.yellowAccent,
+    Colors.red,
+    Colors.lightGreen,
   ];
 
-  List<String> sized = [
+  List<String> sizes = [
     'S',
     'L',
     'M',
     'XL',
     'XXL',
+    'XXXL',
   ];
 
-  String? _selectedColor;
+  Color? _selectedColor;
   String? _selectedSize;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    print(AuthController.token);
     Get.find<ProductDetailsController>().getProductDetails(widget.productId);
   }
 
@@ -56,32 +58,30 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       ),
       body: GetBuilder<ProductDetailsController>(
           builder: (productDetailsController) {
-        return Visibility(
-          visible: productDetailsController.inProgress == false,
-          replacement: const CenterCircularProgressIndicator(),
-          child: Column(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      ProductImageCarousel(
-                        urls: [
-                          productDetailsController.productDetails.img1 ?? '',
-                          productDetailsController.productDetails.img2 ?? '',
-                          productDetailsController.productDetails.img3 ?? '',
-                          productDetailsController.productDetails.img4 ?? '',
-                        ],
-                      ),
-                      productDetailsBody(
-                          productDetailsController.productDetails),
-                    ],
-                  ),
+        if (productDetailsController.inProgress) {
+          return const CenterCircularProgressIndicator();
+        }
+        return Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ProductImageCarousel(
+                      urls: [
+                        productDetailsController.productDetails.img1 ?? '',
+                        productDetailsController.productDetails.img2 ?? '',
+                        productDetailsController.productDetails.img3 ?? '',
+                        productDetailsController.productDetails.img4 ?? '',
+                      ],
+                    ),
+                    productDetailsBody(productDetailsController.productDetails),
+                  ],
                 ),
               ),
-              priceAndAddToCartSection,
-            ],
-          ),
+            ),
+            priceAndAddToCartSection
+          ],
         );
       }),
     );
@@ -107,13 +107,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   builder: (context, value, _) {
                     return ItemCount(
                       initialValue: value,
-                      minValue: 0,
+                      minValue: 1,
                       maxValue: 20,
                       decimalPlaces: 0,
                       step: 1,
                       color: AppColors.primaryColor,
                       onChanged: (v) {
-                        setState(() {});
                         noOfItems.value = v.toInt();
                       },
                     );
@@ -131,18 +130,16 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             'Color',
             style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
           ),
-          const SizedBox(
-            height: 8,
-          ),
           ColorSelector(
-              colors: productDetails.color
-                      ?.split(',')
-                      .map((e) => getColorFromString(e))
-                      .toList() ??
-                  [],
-              onChange: (selectedColor) {
-                _selectedColor = selectedColor.toString();
-              }),
+            colors: productDetails.color
+                    ?.split(',')
+                    .map((e) => getColorFromString(e))
+                    .toList() ??
+                [],
+            onChange: (selectedColor) {
+              _selectedColor = selectedColor;
+            },
+          ),
           const SizedBox(
             height: 16,
           ),
@@ -154,24 +151,27 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             height: 8,
           ),
           SizeSelector(
-              size: productDetails.size?.split(',') ?? [],
+              sizes: productDetails.size?.split(',') ?? [],
               onChange: (s) {
                 _selectedSize = s;
               }),
           const SizedBox(
             height: 16,
           ),
-          Text(
-            productDetails.product!.shortDes ?? '',
-            style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+          const Text(
+            'Description',
+            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
           ),
           const SizedBox(
             height: 8,
           ),
           Text(
             productDetails.des ?? '',
-            style: const TextStyle(color: Colors.black45, fontSize: 14),
-          ),
+            style: const TextStyle(
+              color: Colors.grey,
+              fontSize: 12,
+            ),
+          )
         ],
       ),
     );
@@ -194,10 +194,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             Text(
               rating.toStringAsPrecision(2),
               style: const TextStyle(
-                fontSize: 16,
-                color: Colors.black45,
-                fontWeight: FontWeight.w600,
-              ),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black45),
             ),
           ],
         ),
@@ -205,29 +204,27 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           width: 8,
         ),
         const Text(
-          'Review',
+          'Reviews',
           style: TextStyle(
-            fontSize: 16,
-            color: AppColors.primaryColor,
-            fontWeight: FontWeight.w600,
-          ),
+              fontSize: 16,
+              color: AppColors.primaryColor,
+              fontWeight: FontWeight.w500),
         ),
         const SizedBox(
           width: 8,
         ),
         Card(
           color: AppColors.primaryColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(4),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
           child: const Padding(
             padding: EdgeInsets.all(4.0),
             child: Icon(
-              Icons.favorite_outline,
+              Icons.favorite_outline_rounded,
               size: 18,
+              color: Colors.white,
             ),
           ),
-        ),
+        )
       ],
     );
   }
@@ -236,12 +233,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.primaryColor.withOpacity(0.15),
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(16),
-          topRight: Radius.circular(16),
-        ),
-      ),
+          color: AppColors.primaryColor.withOpacity(0.15),
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(16),
+            topRight: Radius.circular(16),
+          )),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -251,47 +247,104 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               Text(
                 'Price',
                 style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 15,
                     fontWeight: FontWeight.w600,
                     color: Colors.black45),
               ),
               Text(
-                '\$1254',
+                '\$10232930',
                 style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.primaryColor),
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.primaryColor,
+                ),
               ),
             ],
           ),
           SizedBox(
             width: 100,
-            child: ElevatedButton(
-              onPressed: () {
-                if (_selectedColor != null && _selectedSize != null) {
-                  if (Get.find<AuthController>().isTokenNotNull) {
-                  } else {
-                    Get.to(() => const VerifyEmailScreen());
-                  }
-                } else {
-                  Get.showSnackbar(const GetSnackBar(
-                    title: 'Add to cart failed',
-                    message: 'Please select color and size',
-                    duration: Duration(seconds: 2),
-                  ));
-                }
-              },
-              child: const Text('Add To Cart'),
-            ),
+            child:
+                GetBuilder<AddToCartController>(builder: (addToCartController) {
+              return Visibility(
+                visible: addToCartController.inProgress == false,
+                replacement: const CenterCircularProgressIndicator(),
+                child: ElevatedButton(
+                  onPressed: () async {
+                    if (_selectedColor != null && _selectedSize != null) {
+                      if (Get.find<AuthController>().isTokenNotNull) {
+                        final stringColor = colorToString(_selectedColor!);
+                        final response = await addToCartController.addToCart(
+                            widget.productId,
+                            stringColor,
+                            _selectedSize!,
+                            noOfItems.value);
+                        if (response) {
+                          Get.showSnackbar(const GetSnackBar(
+                            title: 'Success',
+                            message: 'This product has been added to cart',
+                            duration: Duration(seconds: 2),
+                          ));
+                        } else {
+                          Get.showSnackbar(GetSnackBar(
+                            title: 'Add to cart failed',
+                            message: addToCartController.errorMessage,
+                            duration: const Duration(seconds: 2),
+                          ));
+                        }
+                      } else {
+                        Get.to(() => const VerifyEmailScreen());
+                      }
+                    } else {
+                      Get.showSnackbar(const GetSnackBar(
+                        title: 'Add to cart failed',
+                        message: 'Please select color and size',
+                        duration: Duration(seconds: 2),
+                      ));
+                    }
+                  },
+                  child: const Text('Add to Cart'),
+                ),
+              );
+            }),
           ),
         ],
       ),
     );
   }
 
-  Color getColorFromString(String colorCode) {
-    String code = colorCode.replaceAll('#', '');
-    String hexCode = 'FF$code';
-    return Color(int.parse('0x$hexCode'));
+  Color getColorFromString(String color) {
+    color = color.toLowerCase();
+    if (color == 'red') {
+      return Colors.red;
+    } else if (color == 'white') {
+      return Colors.white;
+    } else if (color == 'green') {
+      return Colors.green;
+    }
+    return Colors.grey;
   }
+
+  String colorToString(Color color) {
+    if (color == Colors.red) {
+      return 'Red';
+    } else if (color == Colors.white) {
+      return 'White';
+    } else if (color == Colors.green) {
+      return 'Green';
+    }
+    return 'Grey';
+  }
+
+// Color getColorFromString(String colorCode) {
+//   String code = colorCode.replaceAll('#', '');
+//   String hexCode = 'FF$code';
+//   return Color(int.parse('0x$hexCode'));
+// }
+//
+// String colorToHashColorCode(String colorCode) {
+//   return colorCode.toString()
+//       .replaceAll('0xff', '#')
+//       .replaceAll('Color(', '')
+//       .replaceAll(')', '');
+// }
 }

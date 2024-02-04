@@ -15,6 +15,7 @@ class AddToCartController extends GetxController {
       int productId, String color, String size, int qty) async {
     bool isSuccess = false;
     _inProgress = true;
+    update();
     Map<String, dynamic> inputParams = {
       "product_id": productId,
       "color": color,
@@ -23,6 +24,13 @@ class AddToCartController extends GetxController {
     };
     final response =
         await NetworkCaller().postRequest(Urls.addToCart, body: inputParams);
-    if (response.isSuccess) {}
+    if (response.isSuccess) {
+      isSuccess = true;
+    } else {
+      _errorMessage = response.errorMessage;
+    }
+    _inProgress = false;
+    update();
+    return isSuccess;
   }
 }
