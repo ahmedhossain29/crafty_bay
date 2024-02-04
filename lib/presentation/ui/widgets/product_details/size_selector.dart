@@ -2,9 +2,9 @@ import 'package:crafty_bay/presentation/ui/utility/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class SizeSelector extends StatefulWidget {
-  const SizeSelector({super.key, required this.size, required this.onChange});
+  const SizeSelector({super.key, required this.sizes, required this.onChange});
 
-  final List<String> size;
+  final List<String> sizes;
   final Function(String) onChange;
 
   @override
@@ -12,19 +12,20 @@ class SizeSelector extends StatefulWidget {
 }
 
 class _SizeSelectorState extends State<SizeSelector> {
-  @override
   late String _selectedSize;
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    _selectedSize = widget.size.first;
+    _selectedSize = widget.sizes.first;
     widget.onChange(_selectedSize);
   }
 
+  @override
   Widget build(BuildContext context) {
     return Row(
-      children: widget.size
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: widget.sizes
           .map((c) => InkWell(
                 borderRadius: BorderRadius.circular(15),
                 onTap: () {
@@ -35,20 +36,21 @@ class _SizeSelectorState extends State<SizeSelector> {
                   }
                 },
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  margin: EdgeInsets.only(right: 8),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    border: Border.all(color: Colors.grey),
-                    color: c == _selectedSize ? AppColors.primaryColor : null,
-                  ),
-                  child: Text(
-                    c,
-                    style: TextStyle(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12.0, vertical: 8),
+                    margin: const EdgeInsets.only(right: 8),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      border: Border.all(color: Colors.grey),
+                      color: c == _selectedSize ? AppColors.primaryColor : null,
+                    ),
+                    child: Text(
+                      c,
+                      style: TextStyle(
                         color:
-                            c == _selectedSize ? Colors.white : Colors.black45),
-                  ),
-                ),
+                            c == _selectedSize ? Colors.white : Colors.black54,
+                      ),
+                    )),
               ))
           .toList(),
     );
