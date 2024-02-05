@@ -335,6 +335,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     return 'Grey';
   }
 
+//#Has Code
 // Color getColorFromString(String colorCode) {
 //   String code = colorCode.replaceAll('#', '');
 //   String hexCode = 'FF$code';
