@@ -6,14 +6,14 @@ import 'package:crafty_bay/presentation/ui/widgets/center_circular_progress_indi
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class CartsScreen extends StatefulWidget {
-  const CartsScreen({super.key});
+class CartsListScreen extends StatefulWidget {
+  const CartsListScreen({super.key});
 
   @override
-  State<CartsScreen> createState() => _CartsScreenState();
+  State<CartsListScreen> createState() => _CartsListScreenState();
 }
 
-class _CartsScreenState extends State<CartsScreen> {
+class _CartsListScreenState extends State<CartsListScreen> {
   @override
   void initState() {
     // TODO: implement initState
@@ -52,14 +52,17 @@ class _CartsScreenState extends State<CartsScreen> {
                       cartListController.cartListModel.cartItemList?.length ??
                           0,
                   itemBuilder: (context, index) {
-                    return const CartProductItem();
+                    return CartProductItem(
+                      cartItem:
+                          cartListController.cartListModel.cartItemList![index],
+                    );
                   },
                   separatorBuilder: (_, __) => const SizedBox(
                     height: 8,
                   ),
                 ),
               ),
-              totalPriceAndCheckSection,
+              totalPriceAndCheckOutSection(cartListController.totalPrice),
             ],
           );
         }),
@@ -67,7 +70,7 @@ class _CartsScreenState extends State<CartsScreen> {
     );
   }
 
-  Container get totalPriceAndCheckSection {
+  Container totalPriceAndCheckOutSection(RxDouble totalPrice) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -80,23 +83,23 @@ class _CartsScreenState extends State<CartsScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Column(
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 'Total Price',
                 style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                     color: Colors.black45),
               ),
-              Text(
-                '1254',
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.primaryColor),
-              ),
+              Obx(() => Text(
+                    '$totalPrice',
+                    style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.primaryColor),
+                  )),
             ],
           ),
           SizedBox(
