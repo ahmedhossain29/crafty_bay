@@ -1,4 +1,4 @@
-import 'cart_item.dart';
+import '../../presentation/state_holders/cart_item.dart';
 
 class CartListModel {
   String? msg;

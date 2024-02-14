@@ -2,6 +2,7 @@ import 'package:crafty_bay/data/models/product_details_data.dart';
 import 'package:crafty_bay/presentation/state_holders/add_to_cart_controller.dart';
 import 'package:crafty_bay/presentation/state_holders/auth_controller.dart';
 import 'package:crafty_bay/presentation/state_holders/product_details_controller.dart';
+import 'package:crafty_bay/presentation/state_holders/wish_list_controller.dart';
 import 'package:crafty_bay/presentation/ui/screens/auth/verify_email_screen.dart';
 import 'package:crafty_bay/presentation/ui/utility/app_colors.dart';
 import 'package:crafty_bay/presentation/ui/widgets/center_circular_progress_indicator.dart';
@@ -216,13 +217,45 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         Card(
           color: AppColors.primaryColor,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-          child: const Padding(
-            padding: EdgeInsets.all(4.0),
-            child: Icon(
-              Icons.favorite_outline_rounded,
-              size: 18,
-              color: Colors.white,
-            ),
+          child: Padding(
+            padding: const EdgeInsets.all(4.0),
+            child:
+                GetBuilder<WishListController>(builder: (wishListController) {
+              return Visibility(
+                visible: wishListController.inProgress == false,
+                replacement: const CenterCircularProgressIndicator(),
+                child: IconButton(
+                  onPressed: () async {
+                    if (_selectedColor != null && _selectedSize != null) {
+                      if (Get.find<AuthController>().isTokenNotNull) {
+                        final stringColor = colorToString(_selectedColor!);
+                        final response = await wishListController.getWishList();
+                        if (response) {
+                          Get.showSnackbar(GetSnackBar(
+                            title: 'Add to wishList failed',
+                            message: wishListController.errorMessage,
+                            duration: const Duration(seconds: 2),
+                          ));
+                        }
+                      } else {
+                        Get.to(() => const VerifyEmailScreen());
+                      }
+                    } else {
+                      Get.showSnackbar(const GetSnackBar(
+                        title: 'Add to cart failed',
+                        message: 'Please select color and size',
+                        duration: Duration(seconds: 2),
+                      ));
+                    }
+                  },
+                  icon: const Icon(
+                    Icons.favorite_outline_rounded,
+                    size: 18,
+                    color: Colors.white,
+                  ),
+                ),
+              );
+            }),
           ),
         )
       ],

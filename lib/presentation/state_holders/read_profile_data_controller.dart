@@ -29,7 +29,7 @@ class ReadProfileDataController extends GetxController {
     if (response.isSuccess) {
       final profileData = response.responseData['data'];
       print(profileData);
-      if (profileData.isEmpty) {
+      if (profileData == null) {
         _isProfileCompleted = false;
       } else {
         Profile profile = Profile.fromJson(profileData);

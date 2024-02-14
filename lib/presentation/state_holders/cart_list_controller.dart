@@ -3,7 +3,7 @@ import 'package:crafty_bay/data/utility/urls.dart';
 import 'package:crafty_bay/presentation/state_holders/cart_item.dart';
 import 'package:get/get.dart';
 
-import 'cart_list_model.dart';
+import '../../data/models/cart_list_model.dart';
 
 class CartListController extends GetxController {
   bool _inProgress = false;
@@ -29,6 +29,7 @@ class CartListController extends GetxController {
     final response = await NetworkCaller().getRequest(Urls.cartList);
     if (response.isSuccess) {
       _cartListModel = CartListModel.fromJson(response.responseData);
+      _totalPrice.value = _calculateTotalPrice;
       isSuccess = true;
     } else {
       _errorMessage = response.errorMessage;
