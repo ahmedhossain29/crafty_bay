@@ -204,12 +204,15 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         const SizedBox(
           width: 8,
         ),
-        const Text(
-          'Reviews',
-          style: TextStyle(
-              fontSize: 16,
-              color: AppColors.primaryColor,
-              fontWeight: FontWeight.w500),
+        TextButton(
+          onPressed: () {},
+          child: const Text(
+            'Reviews',
+            style: TextStyle(
+                fontSize: 16,
+                color: AppColors.primaryColor,
+                fontWeight: FontWeight.w500),
+          ),
         ),
         const SizedBox(
           width: 8,
@@ -221,38 +224,34 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             padding: const EdgeInsets.all(4.0),
             child:
                 GetBuilder<WishListController>(builder: (wishListController) {
-              return Visibility(
-                visible: wishListController.inProgress == false,
-                replacement: const CenterCircularProgressIndicator(),
-                child: IconButton(
-                  onPressed: () async {
-                    if (_selectedColor != null && _selectedSize != null) {
-                      if (Get.find<AuthController>().isTokenNotNull) {
-                        final stringColor = colorToString(_selectedColor!);
-                        final response = await wishListController.getWishList();
-                        if (response) {
-                          Get.showSnackbar(GetSnackBar(
-                            title: 'Add to wishList failed',
-                            message: wishListController.errorMessage,
-                            duration: const Duration(seconds: 2),
-                          ));
-                        }
-                      } else {
-                        Get.to(() => const VerifyEmailScreen());
+              return IconButton(
+                onPressed: () async {
+                  if (_selectedColor != null && _selectedSize != null) {
+                    if (Get.find<AuthController>().isTokenNotNull) {
+                      final stringColor = colorToString(_selectedColor!);
+                      final response = await wishListController.getWishList();
+                      if (response) {
+                        Get.showSnackbar(const GetSnackBar(
+                          title: 'Success',
+                          message: 'This product has been added to wishList',
+                          duration: Duration(seconds: 2),
+                        ));
                       }
                     } else {
-                      Get.showSnackbar(const GetSnackBar(
-                        title: 'Add to cart failed',
-                        message: 'Please select color and size',
-                        duration: Duration(seconds: 2),
-                      ));
+                      Get.to(() => const VerifyEmailScreen());
                     }
-                  },
-                  icon: const Icon(
-                    Icons.favorite_outline_rounded,
-                    size: 18,
-                    color: Colors.white,
-                  ),
+                  } else {
+                    Get.showSnackbar(const GetSnackBar(
+                      title: 'Add to WishList failed',
+                      message: 'Please select color and size',
+                      duration: Duration(seconds: 2),
+                    ));
+                  }
+                },
+                icon: const Icon(
+                  Icons.favorite_outline_rounded,
+                  size: 18,
+                  color: Colors.white,
                 ),
               );
             }),
@@ -327,12 +326,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       } else {
                         Get.to(() => const VerifyEmailScreen());
                       }
-                    } else {
-                      Get.showSnackbar(const GetSnackBar(
-                        title: 'Add to cart failed',
-                        message: 'Please select color and size',
-                        duration: Duration(seconds: 2),
-                      ));
                     }
                   },
                   child: const Text('Add to Cart'),
