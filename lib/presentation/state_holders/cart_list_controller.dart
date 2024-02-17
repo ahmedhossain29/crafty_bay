@@ -22,6 +22,8 @@ class CartListController extends GetxController {
 
   RxDouble get totalPrice => _totalPrice;
 
+  late final CartItem cartItem;
+
   Future<bool> getCartList() async {
     bool isSuccess = false;
     _inProgress = true;
