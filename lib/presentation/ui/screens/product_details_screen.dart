@@ -4,6 +4,7 @@ import 'package:crafty_bay/presentation/state_holders/auth_controller.dart';
 import 'package:crafty_bay/presentation/state_holders/product_details_controller.dart';
 import 'package:crafty_bay/presentation/state_holders/wish_list_controller.dart';
 import 'package:crafty_bay/presentation/ui/screens/auth/verify_email_screen.dart';
+import 'package:crafty_bay/presentation/ui/screens/product_review_screen.dart';
 import 'package:crafty_bay/presentation/ui/utility/app_colors.dart';
 import 'package:crafty_bay/presentation/ui/widgets/center_circular_progress_indicator.dart';
 import 'package:crafty_bay/presentation/ui/widgets/product_details/color_selector.dart';
@@ -14,7 +15,10 @@ import 'package:get/get.dart';
 import 'package:item_count_number_button/item_count_number_button.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
-  const ProductDetailsScreen({super.key, required this.productId});
+  const ProductDetailsScreen({
+    super.key,
+    required this.productId,
+  });
 
   final int productId;
 
@@ -49,6 +53,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     super.initState();
     print(AuthController.token);
     Get.find<ProductDetailsController>().getProductDetails(widget.productId);
+    //Get.find<ReviewListController>().getReviewList(widget.productId);
   }
 
   @override
@@ -205,7 +210,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           width: 8,
         ),
         TextButton(
-          onPressed: () {},
+          onPressed: () {
+            Get.to(() => ProductReviewScreen(
+                  productID: widget.productId,
+                ));
+          },
           child: const Text(
             'Reviews',
             style: TextStyle(
@@ -284,7 +293,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     color: Colors.black45),
               ),
               Text(
-                '\$10232930',
+                '\$68608',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,

@@ -24,18 +24,6 @@ class CreateReviewScreen extends StatelessWidget {
               height: 52,
             ),
             TextFormField(
-              decoration: const InputDecoration(hintText: 'First Name'),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            TextFormField(
-              decoration: const InputDecoration(hintText: 'Last Name'),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            TextFormField(
               maxLines: 5,
               decoration: const InputDecoration(hintText: 'Write Review'),
             ),
