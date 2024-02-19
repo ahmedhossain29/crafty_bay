@@ -8,7 +8,7 @@ class ReviewListController extends GetxController {
 
   String _errorMessage = '';
 
-  final ReviewListModel _reviewListModel = ReviewListModel();
+  ReviewListModel _reviewListModel = ReviewListModel();
 
   ReviewListModel get reviewListModel => _reviewListModel;
 
