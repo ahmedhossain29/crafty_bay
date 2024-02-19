@@ -39,17 +39,21 @@ class _ProductReviewScreenState extends State<ProductReviewScreen> {
             Expanded(
               child: ListView.builder(
                   itemCount:
-                      reviewListController.reviewListModel.reviewList?.length,
+                      reviewListController.reviewListModel.reviewList?.length ??
+                          0,
                   itemBuilder: (context, index) {
-                    final reviewList =
-                        reviewListController.reviewListModel.reviewList;
+                    // final reviewList =
+                    //     reviewListController.reviewListModel.reviewList;
 
                     return Card(
                       child: ListTile(
                         leading: const Icon(Icons.person),
-                        title: Text(widget.productID.toString()),
-                        subtitle:
-                            Text(reviewList!.first.description.toString()),
+                        title: Text(reviewListController
+                            .reviewListModel.reviewList!.first.id
+                            .toString()),
+                        subtitle: Text(reviewListController
+                            .reviewListModel.reviewList!.first.description
+                            .toString()),
                       ),
                     );
                   }),

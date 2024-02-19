@@ -16,10 +16,6 @@ class WishListController extends GetxController {
 
   String get errorMessage => _errorMessage;
 
-  final RxDouble _totalPrice = 0.0.obs;
-
-  RxDouble get totalPrice => _totalPrice;
-
   Future<bool> getWishList() async {
     bool isSuccess = false;
     _inProgress = true;
